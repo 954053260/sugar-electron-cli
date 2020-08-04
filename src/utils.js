@@ -12,7 +12,7 @@ function getPackageVersion() {
 }
 
 function logPackageVersion() {
-  const msg = `zero-cli version: ${getPackageVersion()}`;
+  const msg = `sugar-electron-cli version: ${getPackageVersion()}`;
   console.log();
   console.log(msg);
   console.log();
