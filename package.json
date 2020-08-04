@@ -1,9 +1,10 @@
 {
   "name": "sugar-electron-cli",
-  "version": "1.0.0",
-  "description": "init a sugar-electron project",
+  "version": "1.0.4",
+  "description": "A sugar-electron init project",
   "bin": {
-    "sugar-electron-cli": "bin/sugar-electron-cli"
+    "sugar-electron-cli": "./bin/sugar-electron-cli.js",
+    "sugar-electron-cli-init": "./bin/sugar-electron-cli-init.js"
   },
   "main": "index.js",
   "scripts": {
