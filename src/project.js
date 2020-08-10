@@ -1,7 +1,7 @@
 const inquirer = require('inquirer');
 const fse = require('fs-extra');
 const download = require('download-git-repo');
-const { TEMPLATE_GIT_REPO, INJECT_FILES } = require('./constants');
+const { TEMPLATE_REACT, TEMPLATE_VUE, INJECT_FILES } = require('./constants');
 const chalk = require('chalk');
 const ora = require('ora');
 const path = require('path');
@@ -13,7 +13,8 @@ const { exec } = require('child_process');
 function Project(options) {
   this.config = Object.assign({
     projectName: '',
-    description: ''
+    description: '',
+    template: ''
   }, options);
   const store = memFs.create();
   this.memFsEditor = editor.create(store);
@@ -29,7 +30,7 @@ Project.prototype.create = function() {
 
 Project.prototype.inquire = function() {
   const prompts = [];
-  const { projectName, description } = this.config;
+  const { projectName, description, template } = this.config;
   if (typeof projectName !== 'string') {
     prompts.push({
       type: 'input',
@@ -69,6 +70,17 @@ Project.prototype.inquire = function() {
       message: '请输入项目描述'
     });
   }
+  
+  prompts.push({
+    type: 'list',
+    name: 'template',
+    default: 0,
+    message: '请选择项目模板类型',
+    choices: [
+      { name: 'React', value: 'React' },
+      { name: 'Vue', value: 'Vue' }
+    ]
+  });
 
   return inquirer.prompt(prompts);
 };
@@ -88,14 +100,15 @@ Project.prototype.injectTemplate = function(source, dest, data) {
 }
 
 Project.prototype.generate = function() {
-  const { projectName, description } = this.config;
+  const { projectName, description, template } = this.config;
   const projectPath = path.join(process.cwd(), projectName);
   const downloadPath = path.join(projectPath, '__download__');
 
   const downloadSpinner = ora('正在下载模板，请稍等...');
   downloadSpinner.start();
+  console.log('+++++++++template++++++', template)
   // 下载git repo
-  download(TEMPLATE_GIT_REPO, downloadPath, { clone: true }, (err) => {
+  download(template === 'React' ? TEMPLATE_REACT : TEMPLATE_VUE, downloadPath, { clone: true }, (err) => {
     if (err) {
       downloadSpinner.color = 'red';
       downloadSpinner.fail(err.message);
