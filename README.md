@@ -10,3 +10,11 @@ npm i sugar-electron-cli -g
 ```
 sugar-electron-cli init
 ```
+
+# 下载后脚手架模板启动
+```
+npm run webpack:dev
+npm run dev
+
+具体请参考脚手架模板readme
+```
